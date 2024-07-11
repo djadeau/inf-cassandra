@@ -4,10 +4,10 @@ metadata:
   name: dev
 spec:
   cassandra:
-    serverVersion: {{ .values.cassandra.serverVersion }}
+    serverVersion: "{{ .values.cassandra.serverVersion }}"
     datacenters:
       - metadata:
-          name: {{ .values.cassandra.dc_name }}
+          name: "{{ .values.cassandra.dc_name }}"
         size: {{ .values.cassandra.replicas }}
         storageConfig:
           cassandraDataVolumeClaimSpec:
