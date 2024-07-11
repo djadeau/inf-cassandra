@@ -4,11 +4,11 @@ metadata:
   name: dev
 spec:
   cassandra:
-    serverVersion: "{{ .values.cassandra.serverVersion }}"
+    serverVersion: "4.1.5"
     datacenters:
       - metadata:
-          name: "{{ .values.cassandra.dc_name }}"
-        size: {{ .values.cassandra.replicas }}
+          name: "dc1"
+        size: 3
         storageConfig:
           cassandraDataVolumeClaimSpec:
             storageClassName: standard
