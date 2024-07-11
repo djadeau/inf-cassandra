@@ -1,0 +1,4 @@
+cassandra:
+  dc_name: dc1
+  replicas: 3
+  serverVersion: "4.0.1"
