@@ -5,10 +5,27 @@ metadata:
 spec:
   cassandra:
     serverVersion: "4.1.5"
+    clusterName: "Weird Cluster Name"
+    metadata:
+      commonLabels: 
+        aLabelKeyClusterLevel: aLabelValueClusterLevel
+      commonAnnotations:
+        anAnnotationKeyClusterLevel: anAnnotationValueClusterLevel
+    telemetry:
+      mcac:
+        enabled: false
+      vector:
+        enabled: false
     datacenters:
       - metadata:
           name: "dc1"
+          commonLabels: 
+            aLabelKeyDcLevel: aLabelValueDcLevel
+          commonAnnotations:
+            anAnnotationKeyDcLevel: anAnnotationValueDCLevel
         size: 3
+        serverVersion: 4.0.13
+        serverImage: "k8ssandra/cass-management-api:4.0.13"
         storageConfig:
           cassandraDataVolumeClaimSpec:
             storageClassName: ceph-rbd
@@ -17,6 +34,46 @@ spec:
             resources:
               requests:
                 storage: 5Gi
+        initContainers:
+          - name: "server-config-init"
+          - name: init-busybox
+            image: busybox
+            command: ["sleep", "10"]
+            volumeMounts:
+              - name: busybox-vol
+                mountPath: /var/lib/busybox
+        containers:
+          - name: "cassandra"
+          - name: "server-system-logger"
+          - name: busybox
+            image: busybox
+            command: ["sleep", "3600"]
+            volumeMounts:
+              - name: busybox-vol
+                mountPath: /var/lib/busybox
+        extraVolumes:
+          volumes:
+            - name: busybox-vol
+              emptyDir: {}
+          pvcs:
+            - name: sts-extra-vol
+              mountPath: "/var/lib/extra"
+              pvcSpec:
+                storageClassName: ceph-rbd
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
+            - name: commitlog-vol
+              mountPath: "/var/lib/cassandra/commitlog2"
+              pvcSpec:
+                storageClassName: ceph-rbd
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 100Mi
         config:
           jvmOptions:
             heapSize: 512M
