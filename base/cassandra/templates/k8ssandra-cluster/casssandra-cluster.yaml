@@ -11,7 +11,7 @@ spec:
         size: 3
         storageConfig:
           cassandraDataVolumeClaimSpec:
-            storageClassName: standard
+            storageClassName: ceph-rbd
             accessModes:
               - ReadWriteOnce
             resources:
