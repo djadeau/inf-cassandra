@@ -24,7 +24,7 @@ spec:
             anAnnotationKeyDcLevel: anAnnotationValueDCLevel
         size: 3
         serverVersion: 5.0.4
-        serverImage: "k8ssandra/cass-management-api:5.0.4"
+        serverImage: "k8ssandra/cass-management-api:5.1-nightly-latest"
         storageConfig:
           cassandraDataVolumeClaimSpec:
             storageClassName: ceph-rbd
